@@ -1,0 +1,104 @@
+@tailwind utilities;
+
+@layer utilities {
+  .content-auto {
+    content-visibility: auto;
+  }
+  
+  .card-shadow {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  .status-badge {
+    @apply px-2 py-1 rounded-full text-xs font-medium;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+/* 全局样式 */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #f9fafb;
+  color: #1f2937;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
+
+/* 表单元素样式 */
+input[type="text"] {
+  @apply border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all duration-300;
+}
+
+button {
+  @apply transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2;
+}
+
+/* 表格样式优化 */
+.storage-table {
+  @apply min-w-full divide-y divide-gray-200;
+}
+
+.storage-table th {
+  @apply px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider;
+}
+
+.storage-table td {
+  @apply px-6 py-4 whitespace-nowrap;
+}
+
+/* 通知动画 */
+.toast-enter {
+  transform: translateY(20px);
+  opacity: 0;
+}
+
+.toast-enter-active {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 300ms, opacity 300ms;
+}
+
+.toast-exit {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.toast-exit-active {
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 300ms, opacity 300ms;
+}
+
+/* 状态颜色映射 */
+.status-work {
+  @apply bg-green-100 text-green-800;
+}
+
+.status-disabled {
+  @apply bg-gray-100 text-gray-800;
+}
+
+.status-other {
+  @apply bg-red-100 text-red-800 animate-pulse-slow;
+}
