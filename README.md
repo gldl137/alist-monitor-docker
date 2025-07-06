@@ -13,6 +13,9 @@
 - **状态持久化**: 即使容器重启，配置和监控任务也能自动恢复。
 - **容器化部署**: 提供 Dockerfile，一键构建和部署。
 
+<img src="https://tc.z.wiki/autoupload/f/VGYUFUfjLTRdneshf7trSU1pPk5D901eM2bYIJnvuwCyl5f0KlZfm6UsKj-HyTuv/20250706/sYIR/1920X921/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20250706124626.png" alt="微信截图图片" width="800" height="auto">
+<img src="https://tc.z.wiki/autoupload/f/VGYUFUfjLTRdneshf7trSU1pPk5D901eM2bYIJnvuwCyl5f0KlZfm6UsKj-HyTuv/20250706/pfFe/1920X921/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20250706124930.png" alt="微信截图图片" width="800" height="auto">
+
 ## 🚀 快速开始 (使用 Docker)
 
 1.  **克隆仓库**
