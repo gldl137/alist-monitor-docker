@@ -1,39 +1,62 @@
-name: Build and Push Docker image to GHCR
+name: Publish to GHCR
 
 on:
   push:
-    branches: [main]
-    tags: ['v*']  # 推送以 v 开头的 tag 也会触发构建
+    branches: [ main, master ]
+    tags: [ 'v*.*.*' ]
+  pull_request:
+    branches: [ main, master ]
 
-permissions:
-  packages: write
-  contents: read
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: gldl137/alist-monitor-docker  # 保持您的镜像名称
 
 jobs:
-  docker:
+  build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write  # 必须要有写入 packages 的权限
+      id-token: write  # 用于 OIDC 认证
 
     steps:
-      - name: Checkout repository
+      # 1. 检出代码
+      - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Log in to GitHub Container Registry
+      # 2. 自动登录 GitHub Container Registry
+      - name: Login to GHCR
         uses: docker/login-action@v3
         with:
-          registry: ghcr.io
+          registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}  # 使用自动生成的 GITHUB_TOKEN
 
-      - name: Extract metadata (tags, labels)
+      # 3. 设置 Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # 4. 生成智能标签
+      - name: Generate Docker tags
         id: meta
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v4
         with:
-          images: ghcr.io/gldl137/alist-monitor
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch   # 分支名标签
+            type=ref,event=tag       # 版本标签
+            type=sha                 # 提交哈希标签
 
-      - name: Build and push Docker image
+      # 5. 构建并推送镜像到 GHCR
+      - name: Build and push to GHCR
         uses: docker/build-push-action@v5
         with:
           context: .
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
